@@ -223,8 +223,8 @@ int main()
 			// Find one item from list
 			WordPair* wordpair = mylist.find(
 				/* lambda function */
-				[&]( WordPair* wordpair ) {
-					if ( strstr( wordpair->getFirstType(), text.c_str() ) != nullptr || strstr( wordpair->getSecondType(), text.c_str() ) != nullptr )
+				[&]( WordPair* tempwordpair ) {
+					if ( strstr( tempwordpair->getFirstType(), text.c_str() ) != nullptr || strstr( tempwordpair->getSecondType(), text.c_str() ) != nullptr )
 						return ( true );
 					else
 						return ( false );
@@ -232,7 +232,7 @@ int main()
 			);
 
 			if ( wordpair ) {
-				std::cout << std::endl << "First match:" << std::endl;	
+				std::cout << std::endl << "First match:" << std::endl;
 				std::cout << wordpair->getSecondType() << " = " << wordpair->getFirstType() << std::endl;
 			}
 			else

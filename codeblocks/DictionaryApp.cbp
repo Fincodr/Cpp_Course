@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="DictionaryApp" />
+		<Option pch_mode="2" />
+		<Option compiler="c11_mingw64_compiler" />
+		<Build>
+			<Target title="Debug">
+				<Option output="Build\DictionaryApp" prefix_auto="1" extension_auto="1" />
+				<Option working_dir=".." />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="c11_mingw64_compiler" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
+					<Add option="-Wcast-align" />
+					<Add option="-Wundef" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Winline" />
+					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-declarations" />
+					<Add option="-Wmissing-include-dirs" />
+					<Add option="-Wswitch-enum" />
+					<Add option="-Wswitch-default" />
+					<Add option="-Wmain" />
+					<Add option="-g" />
+					<Add option="-Wno-write-strings" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="Build\DictionaryApp" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="c11_mingw64_compiler" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="..\List.hpp" />
+		<Unit filename="..\Pair.hpp" />
+		<Unit filename="..\String.hpp" />
+		<Unit filename="..\main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

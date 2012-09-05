@@ -221,7 +221,6 @@ namespace nonstd
             {
 
                 Node* list_end = nullptr;
-                Node* temp = nullptr;
 				Node* swap1 = nullptr;
 
                 while ( list_end != head )
@@ -240,7 +239,6 @@ namespace nonstd
 							swap1->item = i2;
 							swap2->item = i1;
                         }
-                        temp = swap1;
                         swap1 = swap1->next;
                     }
 					list_end = swap1;
