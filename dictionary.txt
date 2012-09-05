@@ -1,0 +1,64 @@
+[Dictionary FileFormat version 1.1]
+a school	koulu
+a class	luokka
+is playing	pelaa
+a game	peli
+a laptop	kannettava tietokone
+cold	kylmä
+warm	lämmin
+hot	kuuma
+well done	hienoa
+thank you	kiitos
+a professor	professori
+we have	meillä on
+a pupil	oppilas
+count	laskea
+amazing	hämmästyttävä
+like	pitää jostakin
+know	tietää
+a fruit	hedelmä
+eat	syötä
+food	ruoka
+drink	juoda
+but	mutta
+need	tarvita
+energy	energia
+the sun	aurinko
+a wind	tuuli
+a sea	meri
+at night	yöllä
+a night	yö
+off the wall	seinästä
+a wall	seinä
+play	pelata
+love	rakastaa
+why	miksi
+ice cream	jäätelö
+a toy	lelu
+a factory	tehdas
+look	katsoa
+a suprise	yllätys
+fantastic	upea
+many	monta
+here	täällä
+any	yhtään
+a pet	lemmikki
+a rat	rotta
+a snail	etana
+a whale	valas
+very	erittäin
+also	myös
+this	tämä
+a brain	aivot
+a computer	tietokone
+a heart	sydän
+ten	kymmenen
+eleven	yksitoista
+twelve	kaksitoista
+thirteen	kolmetoista
+fourteen	neljätoista
+fifteen	viisitoista
+sixteen	kuusitoista
+eighteen	kahdeksantoista
+nineteen	yhdeksäntoista
+twenty	kaksikymmentä
