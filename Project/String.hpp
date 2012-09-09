@@ -66,6 +66,11 @@ namespace nonstd
                 return chars;
             }
 
+            operator char*()
+            {
+                return chars;
+            }
+
             void Clear()
             {
                UnSetChars();
@@ -90,8 +95,7 @@ namespace nonstd
         protected:
             void UnSetChars()
             {
-                if ( chars )
-                    free(chars);
+                delete[] chars;
                 chars = nullptr;
             }
 
@@ -108,11 +112,10 @@ namespace nonstd
 
                 if ( len == 0 ) return;
 
-                if ( chars )
-                    free( chars );
+                UnSetChars();
 
                 // allocate memory (reserve one for termination char)
-                chars = (T*)malloc( len*sizeof(T)+sizeof(T) );
+                chars = new T[len*sizeof(T)+sizeof(T)];
 
                 // copy string contents
                 memcpy( chars, other, len*sizeof(T) );

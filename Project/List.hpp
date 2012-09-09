@@ -248,13 +248,16 @@ namespace nonstd
 			template<class CompareFunction>
 			T* find( CompareFunction c )
 			{
-				Node* node = head;
-				while ( node )
-				{
-					if ( c(node->item) )
-						return( node->item );
-					node = node->next;
-				}
+                if ( head )
+                {
+                    Node* node = head;
+                    while ( node )
+                    {
+                        if ( c(node->item) )
+                            return( node->item );
+                        node = node->next;
+                    }
+                }
 				return ( nullptr );
 			}
 

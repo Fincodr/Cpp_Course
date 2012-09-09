@@ -52,184 +52,71 @@
 
 #include <stdexcept>
 
-#include "List.hpp"             // for Linked-List container
-#include "String.hpp"           // for our own String implementation
-#include "Pair.hpp"
-//#include "IOStream.hpp"         // for our own Input output implementation
+#include "List.hpp"		// for our own Linked-List container
+#include "String.hpp"	// for our own String implementation
+#include "Pair.hpp"		// for our own Pair impelementation
+#include "Console.hpp"	// for our own input from and output to console
+
+#include "Dictionary.hpp"	// for our own Dictionary implementation
 
 using std::cout;
 using std::endl;
 
 using namespace nonstd;
 
-typedef Pair<String, String> WordPair;
+#define ARROW_KEY_LEFT 75
+#define ARROW_KEY_RIGHT 77
+#define ARROW_KEYS 224
 
+// Prototypes
+void displayHeader(void);
 
-int main()
+int main(void)
 {
 	// If we are on windows we can set the console output codepage to ansi
 	setlocale(LC_ALL, "");
 
 	// Start new scope
 	{
-		// Constructor
-		WordPair word01( "a school", "koulu" );
-		WordPair word02( "a class", "luokka" );
-		WordPair word03( "is playing", "pelaa" );
-		WordPair word04( "a game", "peli" );
-		WordPair word05( "a laptop", "kannettava tietokone" );
-		WordPair word06( "cold", "kylma" );
-		WordPair word07( "warm", "lammin" );
-		WordPair word08( "hot", "kuuma" );
-		WordPair word09( "well done", "hienoa" );
-		WordPair word10( "thank you", "kiitos" );
-		WordPair word11( "a professor", "professori" );
-		WordPair word12( "we have", "meilla on" );
-		WordPair word13( "a pupil", "oppilas" );
-		WordPair word14( "count", "laskea" );
-		WordPair word15( "amazing", "hammastyttava" );
-		WordPair word16( "like", "pitaa jostakin" );
-		WordPair word17( "know", "tietaa" );
-		WordPair word18( "a fruit", "hedelma" );
-		WordPair word19( "eat", "syota" );
-		WordPair word20( "food", "ruoka" );
-		WordPair word21( "drink", "juoda" );
-		WordPair word22( "but", "mutta" );
-		WordPair word23( "need", "tarvita" );
-		WordPair word24( "energy", "energia" );
-		WordPair word25( "the sun", "aurinko" );
-		WordPair word26( "a wind", "tuuli" );
-		WordPair word27( "a sea", "meri" );
-		WordPair word28( "at night", "yolla" );
-		WordPair word29( "a night", "yo" );
-		WordPair word30( "off the wall", "seinasta" );
-		WordPair word31( "a wall", "seina" );
-		WordPair word32( "play", "pelata" );
-		WordPair word33( "love", "rakastaa" );
-		WordPair word34( "why", "miksi" );
-		WordPair word35( "ice cream", "jaatelo" );
-		WordPair word36( "a toy", "lelu" );
-		WordPair word37( "a factory", "tehdas" );
-		WordPair word38( "look", "katsoa" );
-		WordPair word39( "a suprise", "yllatys" );
-		WordPair word40( "fantastic", "upea" );
-		WordPair word41( "many", "monta" );
-		WordPair word42( "here", "taalla" );
-		WordPair word43( "any", "yhtaan" );
-		WordPair word44( "a pet", "lemmikki" );
-		WordPair word45( "a rat", "rotta" );
-		WordPair word46( "a snail", "etana" );
-		WordPair word47( "a whale", "valas" );
-		WordPair word48( "very", "erittain" );
-		WordPair word49( "also", "myos" );
-		WordPair word50( "this", "tama" );
-		WordPair word51( "a brain", "aivot" );
-		WordPair word52( "a computer", "tietokone" );
-		WordPair word53( "a heart", "sydan" );
-		WordPair word54( "ten", "kymmenen" );
-		WordPair word55( "eleven", "yksitoista" );
-		WordPair word56( "twelve", "kaksitoista" );
-		WordPair word57( "thirteen", "kolmetoista" );
-		WordPair word58( "fourteen", "neljatoista" );
-		WordPair word59( "fifteen", "viisitoista" );
-		WordPair word60( "sixteen", "kuusitoista" );
-		WordPair word61( "eighteen", "kahdeksantoista" );
-		WordPair word62( "nineteen", "yhdeksantoista" );
-		WordPair word63( "twenty", "kaksikymmenta" );
+		Dictionary dictionary;
 
-		nonstd::List<WordPair> mylist;
+        // load directly from file
+		dictionary.load( (char*)"dictionary.txt" );
 
-		// Add to my own list
-		mylist.push_back(word01);
-		mylist.push_back(word02);
-		mylist.push_back(word03);
-		mylist.push_back(word04);
-		mylist.push_back(word05);
-		mylist.push_back(word06);
-		mylist.push_back(word07);
-		mylist.push_back(word08);
-		mylist.push_back(word09);
-		mylist.push_back(word10);
-		mylist.push_back(word11);
-		mylist.push_back(word12);
-		mylist.push_back(word13);
-		mylist.push_back(word14);
-		mylist.push_back(word15);
-		mylist.push_back(word16);
-		mylist.push_back(word17);
-		mylist.push_back(word18);
-		mylist.push_back(word19);
-		mylist.push_back(word20);
-		mylist.push_back(word21);
-		mylist.push_back(word22);
-		mylist.push_back(word23);
-		mylist.push_back(word24);
-		mylist.push_back(word25);
-		mylist.push_back(word26);
-		mylist.push_back(word27);
-		mylist.push_back(word28);
-		mylist.push_back(word29);
-		mylist.push_back(word30);
-		mylist.push_back(word31);
-		mylist.push_back(word32);
-		mylist.push_back(word33);
-		mylist.push_back(word34);
-		mylist.push_back(word35);
-		mylist.push_back(word36);
-		mylist.push_back(word37);
-		mylist.push_back(word38);
-		mylist.push_back(word39);
-		mylist.push_back(word40);
-		mylist.push_back(word41);
-		mylist.push_back(word42);
-		mylist.push_back(word43);
-		mylist.push_back(word44);
-		mylist.push_back(word45);
-		mylist.push_back(word46);
-		mylist.push_back(word47);
-		mylist.push_back(word48);
-		mylist.push_back(word49);
-		mylist.push_back(word50);
-		mylist.push_back(word51);
-		mylist.push_back(word52);
-		mylist.push_back(word53);
-		mylist.push_back(word54);
-		mylist.push_back(word55);
-		mylist.push_back(word56);
-		mylist.push_back(word57);
-		mylist.push_back(word58);
-		mylist.push_back(word59);
-		mylist.push_back(word60);
-		mylist.push_back(word61);
-		mylist.push_back(word62);
-		mylist.push_back(word63);
+        // add bunch of words to the list
+        WordPair word01( (char*)"a school", (char*)"koulu" );
+        WordPair word02( (char*)"a class", (char*)"luokka" );
+        WordPair word03( (char*)"is playing", (char*)"pelaa" );
+        WordPair word04( (char*)"a game", (char*)"peli" );
+        WordPair word05( (char*)"a laptop", (char*)"kannettava tietokone" );
+        dictionary.push_back( word01 );
+        dictionary.push_back( word02 );
+        dictionary.push_back( word03 );
+        dictionary.push_back( word04 );
+        dictionary.push_back( word05 );
 
-		mylist.sort();
+        // sort
+        dictionary.sort();
 
+		// save sorted list back
+		dictionary.save( (char*)"dictionary.txt" );
+
+        /*
 		std::cout << "** After sorting **" << std::endl;
+		// Read one line from console (must be ended by return char)
+		auto text1 = nonstd::Console::GetLine();
+		// Read one char from console
+		std::cout << text1 << std::endl;
+		std::cout << ch << std::endl;
 		// Print contents using C++11 for_each syntax
-		for( auto item : mylist )
+		for( auto item : dictionary )
 		{
 			std::cout << item->getFirstType() << " = " << item->getSecondType() << std::endl;
 		}
 		std::cout << std::endl;
-
 		while ( true )
 		{
-			std::cout << ::endl;
-			std::string text;
-			std::getline(std::cin, text);
 
-			// Find one item from list
-			WordPair* wordpair = mylist.find(
-				/* lambda function */
-				[&]( WordPair* tempwordpair ) {
-					if ( strstr( tempwordpair->getFirstType(), text.c_str() ) != nullptr || strstr( tempwordpair->getSecondType(), text.c_str() ) != nullptr )
-						return ( true );
-					else
-						return ( false );
-				}
-			);
 
 			if ( wordpair ) {
 				std::cout << std::endl << "First match:" << std::endl;
@@ -239,22 +126,107 @@ int main()
 				std::cout << "Error: No match!" << std::endl;
 
 		}
+		*/
 
+        String mytext("Hello World");
 
-		/*
+        std::cout << mytext << endl;
+
+        bool bRunning = true;
+
+        displayHeader();
+
+		while ( bRunning )
+        {
+
+            int ch = nonstd::Console::GetChar();
+
+            if ( ch == ARROW_KEYS )
+            {
+                int ch2 = nonstd::Console::GetChar();
+                if ( ch2 == 75 )
+                    std::cout << "Left arrow!" << std::endl;
+                if ( ch2 == 77 )
+                    std::cout << "Right arrow!" << std::endl;
+            }
+            else
+            {
+                //std::cout << "You pressed: " << (char)ch << endl;
+                switch ( (char)ch )
+                {
+                    // < and > too
+                    case '<':
+                        std::cout << "Previous word!" << std::endl;
+                        break;
+                    case '>':
+                        std::cout << "Next word!" << std::endl;
+                        break;
+                    // Search
+                    case 's':
+                    case 'S':
+                        {
+                            // ToDo: Change to use own console class -> getline
+                            std::cout << "Enter word to be searched: ";
+                            std::string text;
+                            std::getline(std::cin, text);
+
+                            // Find one item from list
+                            WordPair* wordpair = dictionary.find(
+                                [&]( WordPair* tempwordpair ) -> bool {
+                                    if ( strstr( tempwordpair->getFirstType(), text.c_str() ) != nullptr || strstr( tempwordpair->getSecondType(), text.c_str() ) != nullptr )
+                                        return ( true );
+                                    else
+                                        return ( false );
+                                }
+                            );
+                            if ( wordpair )
+                            	std::cout << "Found word: " << wordpair->getFirstType() << " = " << wordpair->getSecondType() << std::endl;
+                            else
+                            	std::cout << "Sorry, no word found in dictionary." << std::endl;
+                            break;
+                        }
+                    // Add a word to dictionary
+                    case 'a':
+                    case 'A':
+                        {
+                            std::cout << "Enter english word: ";
+                            std::string textEng;
+                            std::getline(std::cin, textEng);
+                            std::cout << "Enter finnish meaning: ";
+                            std::string textFin;
+                            std::getline(std::cin, textFin);
+                            String text1(textEng.c_str());
+                            String text2(textFin.c_str());
+                            WordPair newWord( text1, text2 );
+                            dictionary.push_back( newWord );
+                        }
+                        break;
+                    // Quit
+                    case 'q':
+                    case 'Q':
+                        bRunning = false;
+                        break;
+                    default:
+                        std::cout << "Unknown command!" << std::endl;
+                        break;
+                }
+            }
+        }
+
+        /*
 		std::cout << "** Without sorting **" << std::endl;
 		// Print contents using C++11 for_each syntax
-		for( auto item : mylist )
+		for( auto item : dictionary )
 		{
 			std::cout << item->getFirstType() << " = " << item->getSecondType() << std::endl;
 		}
 		std::cout << endl;
 
-		mylist.sort();
+		dictionary.sort();
 
 		std::cout << "** After sorting **" << std::endl;
 		// Print contents using C++11 for_each syntax
-		for( auto item : mylist )
+		for( auto item : dictionary )
 		{
 			std::cout << item->getFirstType() << " = " << item->getSecondType() << std::endl;
 		}
@@ -262,17 +234,17 @@ int main()
 		std::cout << std::endl;
 		std::cout << "** Popping items out **" << std::endl;
 		// Get items out
-		while ( WordPair* word = mylist.front() ) {
+		while ( WordPair* word = dictionary.front() ) {
 			std::cout << word->getFirstType() << " = " << word->getSecondType() << std::endl;
-			mylist.pop_front();
+			dictionary.pop_front();
 		}
 		*/
 	}
 
 
-    // mylist.debug_print();
+    // dictionary.debug_print();
 
-    // mylist.sort(WordComparer);
+    // dictionary.sort(WordComparer);
 
     /*
     cout << "Using for each: " << endl;
@@ -300,3 +272,16 @@ int main()
     return 0;
 }
 
+void displayHeader(void)
+{
+        // TODO, change to use Console class
+        std::cout << std::endl
+            << "*******************************************************************" << std::endl
+            << "* D I C T I O N A R Y                                             *" << std::endl
+            << "*******************************************************************" << std::endl
+            << "S : Search for a word" << std::endl
+            << "A : Add word" << std::endl
+            << "Q : Quit" << std::endl
+            << "< : Previous word" << std::endl
+            << "> : Next word" << std::endl << std::endl;
+}
