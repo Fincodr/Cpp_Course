@@ -11,7 +11,7 @@
 				<Option working_dir=".." />
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
-				<Option compiler="c11_mingw64_compiler" />
+				<Option compiler="c11" />
 				<Compiler>
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />

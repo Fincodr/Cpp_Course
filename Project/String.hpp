@@ -49,7 +49,7 @@ namespace nonstd
             {
             }
 
-            Basic_String( const T* other )
+            Basic_String( const T* other ) : chars(nullptr)
             {
 				chars = nullptr;
                 SetChars( other );
@@ -60,6 +60,10 @@ namespace nonstd
                 SetChars( other );
                 return *this;
             }
+
+            Basic_String& operator=(const Basic_String&); // delete assignment operator
+            Basic_String(const Basic_String&); // delete copy operator
+
 
             char* c_str() const
             {

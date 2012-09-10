@@ -37,12 +37,14 @@ namespace nonstd
     {
         public:
             File( char* filename, const char* mode );
+            File& operator=(const File&); // delete assignment operator
+            File( const File& ); // delete copy operator
             virtual ~File();
             virtual void Flush();
             virtual void Close();
             virtual bool Valid();
             virtual String* ReadLine( size_t maxlen = 256 );
-            virtual String* ReadString( char sep = '\t', size_t maxlen = 256 ); 
+            virtual String* ReadString( char sep = '\t', size_t maxlen = 256 );
             virtual void Write(const char *format, ...);
 
         protected:
@@ -53,7 +55,11 @@ namespace nonstd
     File::File( char* filename, const char* mode ) : m_pFile(nullptr)
     {
         // Note: Not safe, use fopen_s instead.
-        m_pFile = fopen( filename, mode );
+#ifdef _MSC_VER
+        errno_t error = fopen_s( &m_pFile, filename, mode );
+#else
+		m_pFile = fopen( filename, mode );
+#endif
     }
 
     void File::Flush()
@@ -115,7 +121,7 @@ namespace nonstd
             if ( feof(m_pFile) ) Close();
 
             // return String
-            return( text ); 
+            return( text );
         }
         else
             return nullptr;
@@ -154,7 +160,7 @@ namespace nonstd
             if ( feof(m_pFile) ) Close();
 
             // return String
-            return( text );            
+            return( text );
         }
         else
             return nullptr;
@@ -171,7 +177,11 @@ namespace nonstd
             // concatenate input strings to buffer
             // Note: vsprintf is deprecated
             va_start(arglist, format);
-            vsprintf(buffer, format, arglist);
+#ifdef _MSC_VER
+            vsprintf_s(buffer, sizeof(buffer), format, arglist);
+#else
+			vsprintf(buffer, format, arglist);
+#endif
             va_end(arglist);
 
             // finally write buffer to standard output

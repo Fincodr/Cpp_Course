@@ -1,64 +1,64 @@
 [Dictionary FileFormat version 1.1]
-brain	aivot
-class	luokka
-computer	tietokone
-factory	tehdas
-fruit	hedelma
-game	peli
-heart	sydan
-laptop	kannettava tietokone
-night	yo
-pet	lemmikki
-professor	professori
-pupil	oppilas
-rat	rotta
-school	koulu
-sea	meri
-snail	etana
-suprise	yllatys
-toy	lelu
-wall	seina
-whale	valas
-wind	tuuli
 also	myos
 amazing	hammastyttava
 any	yhtaan
 at night	yolla
+brain	aivot
 but	mutta
+class	luokka
 cold	kylma
+computer	tietokone
 count	laskea
 drink	juoda
 eat	syota
 eighteen	kahdeksantoista
 eleven	yksitoista
 energy	energia
+factory	tehdas
 fantastic	upea
 fifteen	viisitoista
 food	ruoka
 fourteen	neljatoista
+fruit	hedelma
+game	peli
+heart	sydan
 here	taalla
 hot	kuuma
 ice cream	jaatelo
 is playing	pelaa
 know	tietaa
+laptop	kannettava tietokone
 like	pitaa jostakin
 look	katsoa
 love	rakastaa
 many	monta
 need	tarvita
+night	yo
 nineteen	yhdeksantoista
 off the wall	seinasta
+pet	lemmikki
 play	pelata
+professor	professori
+pupil	oppilas
+rat	rotta
+school	koulu
+sea	meri
 sixteen	kuusitoista
+snail	etana
+suprise	yllatys
 ten	kymmenen
 thank you	kiitos
 the sun	aurinko
 thirteen	kolmetoista
 this	tama
+toy	lelu
 twelve	kaksitoista
 twenty	kaksikymmenta
 very	erittain
+wall	seina
 warm	lammin
 we have	meilla on
 well done	hienoa
+whale	valas
 why	miksi
+wind	tuuli

@@ -52,7 +52,11 @@ namespace nonstd
                 // concatenate input strings to buffer
                 // Note: vsprintf is deprecated
                 va_start(arglist, format);
-                vsprintf(buffer, format, arglist);
+#ifdef _MSC_VER
+                vsprintf_s(buffer, sizeof(buffer), format, arglist);
+#else
+				vsprintf(buffer, format, arglist);
+#endif
                 va_end(arglist);
 
                 // finally write buffer to standard output
@@ -105,6 +109,7 @@ namespace nonstd
             // Get one char
 			static int GetChar(void)
 			{
+				// Note: Not portable, use ncurses getch() in linux.
                 return ( _getch() );
 			}
 

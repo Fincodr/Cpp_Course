@@ -35,10 +35,10 @@ namespace nonstd
 			T2 secondType;
 
 			// Empty constructor
-			Pair() {};
+			Pair() : firstType(), secondType() {};
 
 			// Constructor with parameters from chars
-			Pair( char* first, char* second )
+			Pair( char* first, char* second ) : firstType(), secondType()
 			{
 				firstType.Set( first );
 				secondType.Set( second );
@@ -90,7 +90,7 @@ namespace nonstd
 			}
 
 			// Copy constructor
-			Pair(const Pair& other)
+			Pair(const Pair& other) : firstType(), secondType()
 			{
 				firstType.Set( other.firstType() );
 				secondType.Set( other.secondType() );

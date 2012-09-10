@@ -34,21 +34,11 @@
 #define nullptr NULL
 #endif
 
-/**
- *
- * Standard C libraries are allowed
- *
- */
-#include <string.h>     // for strlen
-#include <stdlib.h>     // for malloc
-#include <assert.h>		// for assert macro
-#include <stdio.h>		// for printf
-
-#include "List.hpp"		// for our own Linked-List container
-#include "String.hpp"	// for our own String implementation
-#include "Pair.hpp"		// for our own Pair impelementation
-#include "Console.hpp"	// for our own input from and output to console
-#include "Dictionary.hpp"	// for our own Dictionary implementation
+#include "Console.hpp"      // for our own input from and output to console
+#include "String.hpp"       // for our own String implementation
+#include "Pair.hpp"         // for our own Pair impelementation
+#include "List.hpp"         // for our own Linked-List container
+#include "Dictionary.hpp"   // for our own Dictionary implementation
 
 using nonstd::Console;
 using nonstd::String;
@@ -105,7 +95,7 @@ int main(void)
                         // Previous word
                         if ( curWord != nullptr ) --curWord;
                         if ( curWord == nullptr )
-                        {                            
+                        {
                             Console::Out( "No more words.\n\n");
                             curWord = dictionary.begin();
                         }
@@ -126,7 +116,7 @@ int main(void)
                 else
                 {
                     Console::Out( "No words.\n\n" );
-                }   
+                }
             }
             else
             {
@@ -139,7 +129,7 @@ int main(void)
                             // Previous word
                             if ( curWord != nullptr ) --curWord;
                             if ( curWord == nullptr )
-                            {                            
+                            {
                                 Console::Out( "No more words.\n\n");
                                 curWord = dictionary.begin();
                             }
@@ -253,7 +243,7 @@ int main(void)
                             delete textFin;
 
 							Console::Out( "Word added to dictionary.\n\n" );
-                            
+
                             if ( curWord == nullptr ) curWord = dictionary.begin();
                         }
                         break;
