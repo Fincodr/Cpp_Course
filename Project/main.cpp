@@ -30,6 +30,10 @@
 	#endif
 #endif
 
+#if __cplusplus < 201103L
+#define nullptr NULL
+#endif
+
 /**
  *
  * Standard C libraries are allowed
@@ -40,36 +44,25 @@
 #include <assert.h>		// for assert macro
 #include <stdio.h>		// for printf
 
-/**
- *
- * C++ libraries are not allowed, except for exception handling
- *
- */
-// TODO: Remove these..
-#include <iostream>     // for cout and endl
-#include <string>
-
-
-#include <stdexcept>
-
 #include "List.hpp"		// for our own Linked-List container
 #include "String.hpp"	// for our own String implementation
 #include "Pair.hpp"		// for our own Pair impelementation
 #include "Console.hpp"	// for our own input from and output to console
-
 #include "Dictionary.hpp"	// for our own Dictionary implementation
 
-using std::cout;
-using std::endl;
+using nonstd::Console;
+using nonstd::String;
+using nonstd::kMAX_STRING_LEN;
 
-using namespace nonstd;
-
-#define ARROW_KEY_LEFT 75
-#define ARROW_KEY_RIGHT 77
-#define ARROW_KEYS 224
+static const int kARROW_KEY_LEFT = 75;
+static const int kARROW_KEY_RIGHT = 77;
+static const int kARROW_KEYS = 224;
+static const int kESC_KEY = 27;
 
 // Prototypes
 void displayHeader(void);
+void displayMenu(void);
+void displayWord(Dictionary& dict, Dictionary::iterator& it);
 
 int main(void)
 {
@@ -83,187 +76,206 @@ int main(void)
         // load directly from file
 		dictionary.load( (char*)"dictionary.txt" );
 
-        // add bunch of words to the list
-        WordPair word01( (char*)"a school", (char*)"koulu" );
-        WordPair word02( (char*)"a class", (char*)"luokka" );
-        WordPair word03( (char*)"is playing", (char*)"pelaa" );
-        WordPair word04( (char*)"a game", (char*)"peli" );
-        WordPair word05( (char*)"a laptop", (char*)"kannettava tietokone" );
-        dictionary.push_back( word01 );
-        dictionary.push_back( word02 );
-        dictionary.push_back( word03 );
-        dictionary.push_back( word04 );
-        dictionary.push_back( word05 );
-
-        // sort
-        dictionary.sort();
-
-		// save sorted list back
-		dictionary.save( (char*)"dictionary.txt" );
-
-        /*
-		std::cout << "** After sorting **" << std::endl;
-		// Read one line from console (must be ended by return char)
-		auto text1 = nonstd::Console::GetLine();
-		// Read one char from console
-		std::cout << text1 << std::endl;
-		std::cout << ch << std::endl;
-		// Print contents using C++11 for_each syntax
-		for( auto item : dictionary )
-		{
-			std::cout << item->getFirstType() << " = " << item->getSecondType() << std::endl;
-		}
-		std::cout << std::endl;
-		while ( true )
-		{
-
-
-			if ( wordpair ) {
-				std::cout << std::endl << "First match:" << std::endl;
-				std::cout << wordpair->getSecondType() << " = " << wordpair->getFirstType() << std::endl;
-			}
-			else
-				std::cout << "Error: No match!" << std::endl;
-
-		}
-		*/
-
-        String mytext("Hello World");
-
-        std::cout << mytext << endl;
-
         bool bRunning = true;
 
         displayHeader();
+        displayMenu();
+
+        auto curWord = dictionary.begin();
+
+        Console::Out( "Words in dictionary: %d\n\n", dictionary.count() );
+
+        displayWord( dictionary, curWord );
 
 		while ( bRunning )
         {
+            Console::Out( "Your option: " );
+            // Wait for keypress and the keycode
+            int ch = Console::GetChar();
+            Console::Out( "\r             \r" );
 
-            int ch = nonstd::Console::GetChar();
-
-            if ( ch == ARROW_KEYS )
+            // Browse words by using arrow keys
+            if ( ch == kARROW_KEYS )
             {
-                int ch2 = nonstd::Console::GetChar();
-                if ( ch2 == 75 )
-                    std::cout << "Left arrow!" << std::endl;
-                if ( ch2 == 77 )
-                    std::cout << "Right arrow!" << std::endl;
+                int ch2 = Console::GetChar();
+                if ( dictionary.count() > 0 )
+                {
+                    if ( ch2 == kARROW_KEY_LEFT )
+                    {
+                        // Previous word
+                        if ( curWord != nullptr ) --curWord;
+                        if ( curWord == nullptr )
+                        {                            
+                            Console::Out( "No more words.\n\n");
+                            curWord = dictionary.begin();
+                        }
+                        displayWord( dictionary, curWord );
+                    }
+                    if ( ch2 == kARROW_KEY_RIGHT )
+                    {
+                        // Next word
+                        if ( curWord != nullptr ) ++curWord;
+                        if ( curWord == nullptr )
+                        {
+                            Console::Out( "No more words.\n\n");
+                            curWord = dictionary.last();
+                        }
+                        displayWord( dictionary, curWord );
+                    }
+                }
+                else
+                {
+                    Console::Out( "No words.\n\n" );
+                }   
             }
             else
             {
-                //std::cout << "You pressed: " << (char)ch << endl;
                 switch ( (char)ch )
                 {
-                    // < and > too
+                    // Browse words by using keys < and > too
                     case '<':
-                        std::cout << "Previous word!" << std::endl;
+                        if ( curWord != nullptr )
+                        {
+                            // Previous word
+                            if ( curWord != nullptr ) --curWord;
+                            if ( curWord == nullptr )
+                            {                            
+                                Console::Out( "No more words.\n\n");
+                                curWord = dictionary.begin();
+                            }
+                        }
+                        displayWord( dictionary, curWord );
                         break;
                     case '>':
-                        std::cout << "Next word!" << std::endl;
+                        if ( curWord != nullptr )
+                        {
+                            // Next word
+                            if ( curWord != nullptr ) ++curWord;
+                            if ( curWord == nullptr )
+                            {
+                                Console::Out( "No more words.\n\n");
+                                curWord = dictionary.last();
+                            }
+                        }
+                        displayWord( dictionary, curWord );
+                        break;
+                    // List
+                    case 'l':
+                    case 'L':
+                        {
+							if ( dictionary.count() > 0 )
+							{
+								Console::Out( "Words in dictionary: %d\n\n", dictionary.count() );
+								for ( auto it = dictionary.begin(); it != dictionary.end(); ++it )
+								{
+									auto* wordpair = *it;
+									Console::Out( "%s (eng) = %s (fin)\n", wordpair->getFirstType(),  wordpair->getSecondType() );
+								}
+								Console::Out( "\n" );
+							}
+							else
+							{
+								Console::Out( "No words.\n\n" );
+							}
+                        }
                         break;
                     // Search
                     case 's':
                     case 'S':
                         {
                             // ToDo: Change to use own console class -> getline
-                            std::cout << "Enter word to be searched: ";
-                            std::string text;
-                            std::getline(std::cin, text);
-
+                            Console::Out( (char*)"Enter word to be searched (you can enter partial word): " );
+                            String* text = Console::GetLine(kMAX_STRING_LEN);
                             // Find one item from list
-                            WordPair* wordpair = dictionary.find(
+                            Dictionary::Node* node = dictionary.find(
                                 [&]( WordPair* tempwordpair ) -> bool {
-                                    if ( strstr( tempwordpair->getFirstType(), text.c_str() ) != nullptr || strstr( tempwordpair->getSecondType(), text.c_str() ) != nullptr )
+                                    if ( strstr( tempwordpair->getFirstType(), *text ) != nullptr || strstr( tempwordpair->getSecondType(), *text ) != nullptr )
                                         return ( true );
                                     else
                                         return ( false );
                                 }
                             );
-                            if ( wordpair )
-                            	std::cout << "Found word: " << wordpair->getFirstType() << " = " << wordpair->getSecondType() << std::endl;
+                            delete text;
+                            if ( node )
+                            	Console::Out( "Found word: %s (eng) = %s (fin)\n\n", node->item->getFirstType(),  node->item->getSecondType() );
                             else
-                            	std::cout << "Sorry, no word found in dictionary." << std::endl;
+                            	Console::Out( "Sorry, word not found in dictionary.\n\n" );
+                            break;
+                        }
+                    // Delete
+                    case 'd':
+                    case 'D':
+                        {
+                            // ToDo: Change to use own console class -> getline
+                            Console::Out( "Enter word to be deleted (you can enter partial word): " );
+                            String* text = Console::GetLine(kMAX_STRING_LEN);
+
+                            // Find one item from list
+                            Dictionary::Node* node = dictionary.find(
+                                [&]( WordPair* tempwordpair ) -> bool {
+                                    if ( strstr( tempwordpair->getFirstType(), *text ) != nullptr || strstr( tempwordpair->getSecondType(), *text ) != nullptr )
+                                        return ( true );
+                                    else
+                                        return ( false );
+                                }
+                            );
+                            delete text;
+                            if ( node )
+                            {
+                            	Console::Out( "Deleted word: %s (eng) = %s (fin)\n\n", node->item->getFirstType(), node->item->getSecondType() );
+                            	dictionary.erase(node);
+
+                                if ( curWord == nullptr ) curWord = dictionary.begin();
+                            }
+                            else
+                            	Console::Out( "Sorry, word not found in dictionary.\n\n" );
                             break;
                         }
                     // Add a word to dictionary
-                    case 'a':
-                    case 'A':
+                    case 'i':
+                    case 'I':
                         {
-                            std::cout << "Enter english word: ";
-                            std::string textEng;
-                            std::getline(std::cin, textEng);
-                            std::cout << "Enter finnish meaning: ";
-                            std::string textFin;
-                            std::getline(std::cin, textFin);
-                            String text1(textEng.c_str());
-                            String text2(textFin.c_str());
-                            WordPair newWord( text1, text2 );
+                            Console::Out( "Enter english word: " );
+                            String* textEng = Console::GetLine(kMAX_STRING_LEN);
+
+                            Console::Out( "Enter finnish meaning: " );
+                            String* textFin = Console::GetLine(kMAX_STRING_LEN);
+
+                            WordPair newWord( *textEng, *textFin );
+
+                            // insert new word to back of the list
                             dictionary.push_back( newWord );
+
+                            // sort after inserting
+                            dictionary.sort();
+
+                            delete textEng;
+                            delete textFin;
+
+							Console::Out( "Word added to dictionary.\n\n" );
+                            
+                            if ( curWord == nullptr ) curWord = dictionary.begin();
                         }
                         break;
                     // Quit
+                    case 'e':
+                    case 'E':
                     case 'q':
                     case 'Q':
+                    case kESC_KEY:
+                        Console::Out( "Bye!\n" );
                         bRunning = false;
                         break;
                     default:
-                        std::cout << "Unknown command!" << std::endl;
+                        Console::Out( "Unknown command! (%d)\n", (int)ch );
                         break;
                 }
             }
         }
 
-        /*
-		std::cout << "** Without sorting **" << std::endl;
-		// Print contents using C++11 for_each syntax
-		for( auto item : dictionary )
-		{
-			std::cout << item->getFirstType() << " = " << item->getSecondType() << std::endl;
-		}
-		std::cout << endl;
-
-		dictionary.sort();
-
-		std::cout << "** After sorting **" << std::endl;
-		// Print contents using C++11 for_each syntax
-		for( auto item : dictionary )
-		{
-			std::cout << item->getFirstType() << " = " << item->getSecondType() << std::endl;
-		}
-
-		std::cout << std::endl;
-		std::cout << "** Popping items out **" << std::endl;
-		// Get items out
-		while ( WordPair* word = dictionary.front() ) {
-			std::cout << word->getFirstType() << " = " << word->getSecondType() << std::endl;
-			dictionary.pop_front();
-		}
-		*/
+        // save list to file
+        dictionary.save( (char*)"dictionary.txt" );
 	}
-
-
-    // dictionary.debug_print();
-
-    // dictionary.sort(WordComparer);
-
-    /*
-    cout << "Using for each: " << endl;
-    for ( auto& word : stdlist )
-    {
-        cout << "  Word:" << endl;
-        cout << "    Fin: " << word.GetFinnishWord() << endl;
-        cout << "    Eng: " << word.GetEnglishWord() << endl;
-    }
-
-    cout << endl;
-
-    cout << "Word1: " << endl;
-    cout << "  " << word1.GetEnglishWord() << endl;
-    cout << "  " << word1.GetFinnishWord() << endl;
-    cout << "Word2: " << endl;
-    cout << "  " << word2.GetEnglishWord() << endl;
-    cout << "  " << word2.GetFinnishWord() << endl;
-    */
 
 	#ifdef _CRTDBG_MAP_ALLOC
 	_CrtDumpMemoryLeaks();
@@ -272,16 +284,44 @@ int main(void)
     return 0;
 }
 
+void displayWord( Dictionary& dict, Dictionary::iterator& it )
+{
+    // Display current word
+    if ( it == nullptr )
+        it = dict.begin();
+    if ( it != nullptr )
+    {
+        WordPair* wordpair = *it;
+        Console::Out( "Current word: %s (eng) = %s (fin)\n\n", wordpair->getFirstType(), wordpair->getSecondType() );
+    }
+    else
+        Console::Out( "No words.\n\n" );
+}
+
 void displayHeader(void)
 {
         // TODO, change to use Console class
-        std::cout << std::endl
-            << "*******************************************************************" << std::endl
-            << "* D I C T I O N A R Y                                             *" << std::endl
-            << "*******************************************************************" << std::endl
-            << "S : Search for a word" << std::endl
-            << "A : Add word" << std::endl
-            << "Q : Quit" << std::endl
-            << "< : Previous word" << std::endl
-            << "> : Next word" << std::endl << std::endl;
+        Console::Out(
+            "\n"
+            "************************************************\n"
+            "****               Dictionary               ****\n"
+            "**** By Mika Luoma-aho, Student id: 1004547 ****\n"
+            "************************************************\n"
+            "\n" );
+}
+
+void displayMenu(void)
+{
+        // TODO, change to use Console class
+        Console::Out(
+            "************************************************\n"
+            "****                  MENU                  ****\n"
+            "************************************************\n"
+            "S - Search for a word\n"
+            "I - Insert a word\n"
+            "D - Delete a word\n"
+            "L - List words\n"
+            "E : Exit\n"
+            "< > : Show words\n"
+            "\n" );
 }

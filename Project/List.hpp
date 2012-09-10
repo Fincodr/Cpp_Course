@@ -27,8 +27,6 @@
 
 #include <iterator>
 
-#include <iostream>	// for debug
-
 namespace nonstd
 {
 
@@ -48,6 +46,7 @@ namespace nonstd
 	 *  c.sort() - Sorts the list (by function elem > elem)
 	 *  c.find(op) - Finds and returns an element from the list using op function (can be a lambda for example)
 	 *  c.contains(op) - Returns true if an element is found in the list using op function
+	 *  c.count() - Returns the count of the items in the dictionary
 	 *
 	 *  Element insertion happends at constant time
 	 *  Element sorting happends at O(^2) time (exponential to the count of elements)
@@ -72,7 +71,7 @@ namespace nonstd
             Node* head;
             Node* tail;
 
-            List() : head(nullptr), tail(nullptr) {}
+            List() : head(nullptr), tail(nullptr), m_count(0) {}
 
             virtual ~List() {
 				clear();
@@ -97,6 +96,7 @@ namespace nonstd
 
             iterator begin() const { return ( head ? iterator(head) : nullptr ); }
             iterator end() const { return ( tail ? iterator(tail->next) : nullptr ); }
+            iterator last() const { return ( tail ? iterator(tail) : nullptr ); }
 
             /** Copy constructor
              *  \param other Object to copy from
@@ -127,8 +127,10 @@ namespace nonstd
                 else
                 {
                     // Add to last item
-                    tail = tail->next = node;
+                    tail->next = node;
+                    tail = node;
                 }
+                ++m_count;
 
                 // Always return reference back to us
                 return *this;
@@ -154,6 +156,7 @@ namespace nonstd
                     // Add to last item
                     head = head->prev = node;
                 }
+                ++m_count;
 
                 // Always return reference back to us
                 return *this;
@@ -183,6 +186,7 @@ namespace nonstd
                     }
 					delete( node->item );
 					delete( node );
+					--m_count;
                 }
 
 				// Always return reference back to us
@@ -211,11 +215,38 @@ namespace nonstd
                     }
 					delete( node->item );
 					delete( node );
+					--m_count;
                 }
 
 				// Always return reference back to us
 				return *this;
 			}
+
+            List& erase( Node* node )
+            {
+                if ( node )
+                {
+                    // if we are the head
+                    if ( node == head )
+                        pop_front();
+                    else if ( node == tail )
+                        pop_back();
+                    else
+                    {
+                        Node* prev = node->prev;
+                        Node* next = node->next;
+                        prev->next = next;
+                        next->prev = prev;
+                        delete( node->item );
+                        delete( node );
+                        --m_count;
+                    }
+
+                }
+
+                // Always return reference back to us
+                return *this;
+            }
 
             void sort()
             {
@@ -246,7 +277,7 @@ namespace nonstd
             }
 
 			template<class CompareFunction>
-			T* find( CompareFunction c )
+			Node* find( CompareFunction c )
 			{
                 if ( head )
                 {
@@ -254,7 +285,7 @@ namespace nonstd
                     while ( node )
                     {
                         if ( c(node->item) )
-                            return( node->item );
+                            return( node );
                         node = node->next;
                     }
                 }
@@ -272,10 +303,17 @@ namespace nonstd
 				}
 				head = nullptr;
 				tail = nullptr;
+				m_count = 0;
+			}
+
+			int count()
+			{
+			    return ( m_count );
 			}
 
         protected:
         private:
+            int m_count;
     };
 
 }

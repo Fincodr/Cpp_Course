@@ -25,9 +25,11 @@
 #ifndef CONSOLE_HPP
 #define CONSOLE_HPP
 
-#include <stdio.h>	// for fgetc, fgets
-#include <conio.h>	// fot getch
-#include "String.hpp"
+#include <cstdarg>	    // for va_ functions
+#include <conio.h>	    // fot getch (note: use ncurses on linux)
+#include <stdio.h>	    // for fgetc, fgets
+
+#include "String.hpp"	// for our own String implementation
 
 namespace nonstd
 {
@@ -39,30 +41,72 @@ namespace nonstd
 			Console() {};
 			~Console() {};
 
-			static String* GetLine(void)
+            // Simple printf wrapper to support format and parameters
+            // In C++11 It would be better to use variadic templates for typesafe output
+			static void Out( const char *format, ...)
 			{
+                // Note: Not safe :)
+                va_list arglist;
+                char buffer[1024];
+
+                // concatenate input strings to buffer
+                // Note: vsprintf is deprecated
+                va_start(arglist, format);
+                vsprintf(buffer, format, arglist);
+                va_end(arglist);
+
+                // finally write buffer to standard output
+                printf( "%s", buffer );
+			}
+
+            // Get one line to internal buffer and output String class
+			static String* GetLine(size_t maxlen = 256)
+			{
+				char* buffer = new char[maxlen];
+				size_t i = 0;
+            	buffer[i] = '\0';
+
+				while ( true )
+				{
+					int c = fgetc(stdin);
+					// do we have any more characters?
+					if ( c == EOF )
+						break;
+					// was the char enter/return char?
+					if ( c == '\n' )
+						break;
+					// was the char backspace?
+					if ( c == '\b' )
+					{
+						// remove cur char
+						buffer[i] = '\0';
+						if ( i > 0 ) --i;
+					}
+					else
+					{
+						buffer[i] = (char)c;
+						++i;
+						buffer[i] = '\0';
+						if ( i >= maxlen )
+							break;
+					}
+				}
+
+				// create new String from buffer
 				String* text = new String();
-				text->Set("Hello World!");
+				text->Set(buffer);
+
+				delete[] buffer;
+
+				// return String
 				return( text );
 			}
 
+            // Get one char
 			static int GetChar(void)
 			{
-				return ( _getch() );
+                return ( _getch() );
 			}
-
-			// http://stackoverflow.com/questions/314401/how-to-read-a-line-from-console-in-c/
-
-			// Printf type function?
-			//
-			// Stream support??
-			//
-			// char << Console::In;
-			// String*(?) << Console::In;
-			//
-			// Console::Out << "Hello World";
-			// Console::Out << (char)
-			// Console::Out << (String)
 
 		protected:
 		private:

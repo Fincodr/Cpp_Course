@@ -30,7 +30,7 @@
 
 namespace nonstd
 {
-	const size_t MAX_STRING_LEN = 1024;
+	const size_t kMAX_STRING_LEN = 1024;
 
     /**
      *
@@ -59,6 +59,11 @@ namespace nonstd
             {
                 SetChars( other );
                 return *this;
+            }
+
+            char* c_str() const
+            {
+                return chars;
             }
 
             T* operator()() const
@@ -95,7 +100,8 @@ namespace nonstd
         protected:
             void UnSetChars()
             {
-                delete[] chars;
+                if ( chars != nullptr )
+                    delete[] chars;
                 chars = nullptr;
             }
 
@@ -103,7 +109,7 @@ namespace nonstd
             {
                 // Scan string len, keep maximum
                 size_t len = 0;
-                for ( len=0; len!=MAX_STRING_LEN; ++len )
+                for ( len=0; len!=kMAX_STRING_LEN; ++len )
                 {
                     T _char = other[len];
                     if ( _char == 0 )
