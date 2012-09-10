@@ -311,7 +311,7 @@ void displayMenu(void)
             "I - Insert a word\n"
             "D - Delete a word\n"
             "L - List words\n"
-            "E : Exit\n"
-            "< > : Show words\n"
+            "E - Exit\n"
+            "< > - Show words\n"
             "\n" );
 }
