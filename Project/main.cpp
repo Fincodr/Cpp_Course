@@ -30,9 +30,11 @@
 	#endif
 #endif
 
+/*
 #if __cplusplus < 201103L
 #define nullptr NULL
 #endif
+*/
 
 #include "Console.hpp"      // for our own input from and output to console
 #include "String.hpp"       // for our own String implementation
@@ -228,21 +230,38 @@ int main(void)
                             Console::Out( "Enter english word: " );
                             String* textEng = Console::GetLine(kMAX_STRING_LEN);
 
-                            Console::Out( "Enter finnish meaning: " );
-                            String* textFin = Console::GetLine(kMAX_STRING_LEN);
+							// Find one item from list
+                            Dictionary::Node* node = dictionary.find(
+                                [&]( WordPair* tempwordpair ) -> bool {
+                                    if ( strcmp( tempwordpair->getFirstType(), *textEng ) == 0 )
+                                        return ( true );
+                                    else
+                                        return ( false );
+                                }
+                            );
+							if ( node )
+							{
+                            	Console::Out( "Sorry. Word: %s (eng) = %s (fin) already exists in the dictionary. Please remove it first if you want to replace it.\n\n", node->item->getFirstType(), node->item->getSecondType() );
+							}
+							else
+							{
+								Console::Out( "Enter finnish meaning: " );
+								String* textFin = Console::GetLine(kMAX_STRING_LEN);
 
-                            WordPair newWord( *textEng, *textFin );
+								WordPair newWord( *textEng, *textFin );
 
-                            // insert new word to back of the list
-                            dictionary.push_back( newWord );
+								// insert new word to back of the list
+								dictionary.push_back( newWord );
 
-                            // sort after inserting
-                            dictionary.sort();
+								// sort after inserting
+								dictionary.sort();
+
+								Console::Out( "Word added to dictionary.\n\n" );
+
+								delete textFin;
+							}
 
                             delete textEng;
-                            delete textFin;
-
-							Console::Out( "Word added to dictionary.\n\n" );
 
                             if ( curWord == nullptr ) curWord = dictionary.begin();
                         }
