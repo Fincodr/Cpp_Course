@@ -66,19 +66,7 @@ int main(void)
 		Dictionary dictionary;
 
         // load directly from file
-		// dictionary.load( (char*)"dictionary.txt" );
-
-		// tests
-		WordPair word1( "Hello1", "Hei1" );
-		dictionary.push_back( word1 );
-		dictionary.pop_back();
-
-		/*
-		dictionary.push_back( word2 );
-		dictionary.pop_back();
-		dictionary.push_back( word3 );
-		dictionary.pop_back();
-		*/
+		dictionary.load( (char*)"dictionary.txt" );
 
         bool bRunning = true;
 

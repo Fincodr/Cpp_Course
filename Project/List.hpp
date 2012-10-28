@@ -26,7 +26,6 @@
 #define LIST_HPP
 
 #include <iterator>
-#include "Console.hpp"
 
 namespace nonstd
 {
@@ -182,7 +181,7 @@ namespace nonstd
 					// if head is tail we have only this item
 					// so we should set the tail to nullptr too
 					if ( head == tail )
-						taill = nullptr;
+						tail = nullptr;
                     // Set the current head to next item (that can be nullptr)
                     head = node->next;
                     if ( head != nullptr ) {
