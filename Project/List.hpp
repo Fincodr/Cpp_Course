@@ -227,12 +227,15 @@ namespace nonstd
                 if ( node )
                 {
                     // if we are the head
-                    if ( node == head )
+                    if ( node == head ) {
                         pop_front();
-                    else if ( node == tail )
+					}
+                    else if ( node == tail ) {
                         pop_back();
+					}
                     else
                     {
+
                         Node* prev = node->prev;
                         Node* next = node->next;
                         prev->next = next;
@@ -241,7 +244,6 @@ namespace nonstd
                         delete( node );
                         --m_count;
                     }
-
                 }
 
                 // Always return reference back to us

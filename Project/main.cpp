@@ -216,8 +216,7 @@ int main(void)
                             {
                             	Console::Out( "Deleted word: %s (eng) = %s (fin)\n\n", node->item->getFirstType(), node->item->getSecondType() );
                             	dictionary.erase(node);
-
-                                if ( curWord == nullptr ) curWord = dictionary.begin();
+                                if ( curWord == node ) curWord = dictionary.begin();
                             }
                             else
                             	Console::Out( "Sorry, word not found in dictionary.\n\n" );
@@ -230,39 +229,50 @@ int main(void)
                             Console::Out( "Enter english word: " );
                             String* textEng = Console::GetLine(kMAX_STRING_LEN);
 
-							// Find one item from list
-                            Dictionary::Node* node = dictionary.find(
-                                [&]( WordPair* tempwordpair ) -> bool {
-                                    if ( strcmp( tempwordpair->getFirstType(), *textEng ) == 0 )
-                                        return ( true );
-                                    else
-                                        return ( false );
-                                }
-                            );
-							if ( node )
+							if ( textEng->length() == 0 )
 							{
-                            	Console::Out( "Sorry. Word: %s (eng) = %s (fin) already exists in the dictionary. Please remove it first if you want to replace it.\n\n", node->item->getFirstType(), node->item->getSecondType() );
+								Console::Out( "Sorry. Empty english word not accepted. Please try again.\n\n" );
 							}
 							else
 							{
-								Console::Out( "Enter finnish meaning: " );
-								String* textFin = Console::GetLine(kMAX_STRING_LEN);
+								// Find one item from list
+								Dictionary::Node* node = dictionary.find(
+									[&]( WordPair* tempwordpair ) -> bool {
+										if ( strcmp( tempwordpair->getFirstType(), *textEng ) == 0 )
+											return ( true );
+										else
+											return ( false );
+									}
+								);
+								if ( node )
+								{
+                            		Console::Out( "Sorry. Word: %s (eng) = %s (fin) already exists in the dictionary. Please remove it first if you want to replace it.\n\n", node->item->getFirstType(), node->item->getSecondType() );
+								}
+								else
+								{
+									Console::Out( "Enter finnish meaning: " );
+									String* textFin = Console::GetLine(kMAX_STRING_LEN);
+									if ( textFin->length() == 0 )
+									{
+										Console::Out( "Sorry. Empty finnish word not accepted. Please try again.\n\n" );
+									}
+									else
+									{
+										WordPair newWord( *textEng, *textFin );
 
-								WordPair newWord( *textEng, *textFin );
+										// insert new word to back of the list
+										dictionary.push_back( newWord );
 
-								// insert new word to back of the list
-								dictionary.push_back( newWord );
+										// sort after inserting
+										dictionary.sort();
 
-								// sort after inserting
-								dictionary.sort();
+										Console::Out( "Word added to dictionary.\n\n" );
+									}
 
-								Console::Out( "Word added to dictionary.\n\n" );
-
-								delete textFin;
+									delete textFin;
+								}
 							}
-
                             delete textEng;
-
                             if ( curWord == nullptr ) curWord = dictionary.begin();
                         }
                         break;

@@ -25,7 +25,6 @@
 #ifndef STRING_HPP
 #define STRING_HPP
 
-#include <string.h>             // for strlen
 #include <stdlib.h>             // for malloc, memcpy
 
 namespace nonstd
@@ -36,8 +35,6 @@ namespace nonstd
      *
      *  Note: Basic string container, not for production use!
      *
-     *  Warning: Is vulnerable for buffer overflow because input string length is checked with strlen
-     *
      */
     template<typename T>
     class Basic_String
@@ -45,13 +42,13 @@ namespace nonstd
         public:
 
             // ctor
-            Basic_String() : chars(nullptr)
+            Basic_String() : m_chars(nullptr)
             {
             }
 
-            Basic_String( const T* other ) : chars(nullptr)
+            Basic_String( const T* other ) : m_chars(nullptr)
             {
-				chars = nullptr;
+				m_chars = nullptr;
                 SetChars( other );
             }
 
@@ -64,20 +61,24 @@ namespace nonstd
             Basic_String& operator=(const Basic_String&); // delete assignment operator
             Basic_String(const Basic_String&); // delete copy operator
 
+			size_t length() const
+			{
+				return m_length;
+			}
 
             char* c_str() const
             {
-                return chars;
+                return m_chars;
             }
 
             T* operator()() const
             {
-                return chars;
+                return m_chars;
             }
 
             operator char*()
             {
-                return chars;
+                return m_chars;
             }
 
             void Clear()
@@ -88,11 +89,11 @@ namespace nonstd
 			// Compare
 			bool operator<( Basic_String& other )
 			{
-				return strcmp( chars, other.chars ) < 0;
+				return strcmp( m_chars, other.m_chars ) < 0;
 			}
 			bool operator>( Basic_String& other )
 			{
-				return strcmp( chars, other.chars ) > 0;
+				return strcmp( m_chars, other.m_chars ) > 0;
 			}
 
             // dtor
@@ -104,9 +105,10 @@ namespace nonstd
         protected:
             void UnSetChars()
             {
-                if ( chars != nullptr )
-                    delete[] chars;
-                chars = nullptr;
+                if ( m_chars != nullptr )
+                    delete[] m_chars;
+                m_chars = nullptr;
+				m_length = 0;
             }
 
             void SetChars( const T* other )
@@ -120,20 +122,21 @@ namespace nonstd
                         break;
                 }
 
-                if ( len == 0 ) return;
-
                 UnSetChars();
+				
+				m_length = len;
 
                 // allocate memory (reserve one for termination char)
-                chars = new T[len*sizeof(T)+sizeof(T)];
+                m_chars = new T[len*sizeof(T)+sizeof(T)];
 
                 // copy string contents
-                memcpy( chars, other, len*sizeof(T) );
+                memcpy( m_chars, other, len*sizeof(T) );
 
                 // write termination char
-                chars[len] = 0;
+                m_chars[len] = 0;
             }
-            T* chars;
+            T* m_chars;
+			size_t m_length;
 
         private:
 
