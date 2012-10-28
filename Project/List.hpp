@@ -26,6 +26,7 @@
 #define LIST_HPP
 
 #include <iterator>
+#include "Console.hpp"
 
 namespace nonstd
 {
@@ -178,6 +179,10 @@ namespace nonstd
                 {
                     // Get the first item
                     Node* node = head;
+					// if head is tail we have only this item
+					// so we should set the tail to nullptr too
+					if ( head == tail )
+						taill = nullptr;
                     // Set the current head to next item (that can be nullptr)
                     head = node->next;
                     if ( head != nullptr ) {
@@ -207,6 +212,10 @@ namespace nonstd
                 {
                     // Get the last item
                     Node* node = tail;
+					// if tail is head we have only this item
+					// so we should set the head to nullptr too
+					if ( tail == head )
+						head = nullptr;
                     // Set the current tail to prev item (that can be nullptr)
                     tail = node->prev;
                     if ( tail != nullptr ) {

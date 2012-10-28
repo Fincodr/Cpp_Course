@@ -66,7 +66,19 @@ int main(void)
 		Dictionary dictionary;
 
         // load directly from file
-		dictionary.load( (char*)"dictionary.txt" );
+		// dictionary.load( (char*)"dictionary.txt" );
+
+		// tests
+		WordPair word1( "Hello1", "Hei1" );
+		dictionary.push_back( word1 );
+		dictionary.pop_back();
+
+		/*
+		dictionary.push_back( word2 );
+		dictionary.pop_back();
+		dictionary.push_back( word3 );
+		dictionary.pop_back();
+		*/
 
         bool bRunning = true;
 
@@ -201,25 +213,31 @@ int main(void)
                             // ToDo: Change to use own console class -> getline
                             Console::Out( "Enter word to be deleted (you can enter partial word): " );
                             String* text = Console::GetLine(kMAX_STRING_LEN);
-
-                            // Find one item from list
-                            Dictionary::Node* node = dictionary.find(
-                                [&]( WordPair* tempwordpair ) -> bool {
-                                    if ( strstr( tempwordpair->getFirstType(), *text ) != nullptr || strstr( tempwordpair->getSecondType(), *text ) != nullptr )
-                                        return ( true );
-                                    else
-                                        return ( false );
-                                }
-                            );
+							if ( text->length() == 0 )
+							{
+								Console::Out( "Sorry. Empty word not accepted. Please try again.\n\n" );
+							}
+							else
+							{
+								// Find one item from list
+								Dictionary::Node* node = dictionary.find(
+									[&]( WordPair* tempwordpair ) -> bool {
+										if ( strstr( tempwordpair->getFirstType(), *text ) != nullptr || strstr( tempwordpair->getSecondType(), *text ) != nullptr )
+											return ( true );
+										else
+											return ( false );
+									}
+								);
+								if ( node )
+								{
+                            		Console::Out( "Deleted word: %s (eng) = %s (fin)\n\n", node->item->getFirstType(), node->item->getSecondType() );
+                            		dictionary.erase(node);
+									if ( curWord == node ) curWord = dictionary.begin();
+								}
+								else
+                            		Console::Out( "Sorry, word not found in dictionary.\n\n" );
+							}
                             delete text;
-                            if ( node )
-                            {
-                            	Console::Out( "Deleted word: %s (eng) = %s (fin)\n\n", node->item->getFirstType(), node->item->getSecondType() );
-                            	dictionary.erase(node);
-                                if ( curWord == node ) curWord = dictionary.begin();
-                            }
-                            else
-                            	Console::Out( "Sorry, word not found in dictionary.\n\n" );
                             break;
                         }
                     // Add a word to dictionary
